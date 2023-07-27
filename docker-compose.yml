@@ -1,0 +1,16 @@
+version: "3"
+
+networks:
+    microservice_backend:
+        driver: bridge
+
+services:
+    microservice_php:
+        image: alamin899/larave-microservice:v1.x
+        container_name: microservice_php
+        volumes:
+            - "./.env:/app/.env"
+        ports:
+            - "8085:80"
+        networks:
+            - microservice_backend

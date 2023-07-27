@@ -1,0 +1,7 @@
+.git
+.idea
+vendor
+node_modules
+public/build
+.env
+docker/development
