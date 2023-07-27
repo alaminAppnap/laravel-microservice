@@ -1,0 +1,50 @@
+name: Larvel microservice application deployment on development server
+
+on:
+  push:
+    branches:
+      - v1.x
+
+jobs:
+  dev-build:
+    name: Development Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Git Repository
+        uses: actions/checkout@v2
+
+      - name: Docker Login
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: |
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+
+      - name: Development Build Script
+        run: |
+          docker build --platform linux/amd64 -f Dockerfile . -t larave-microservice:v1.x
+          docker tag larave-microservice:v1.x alamin899/larave-microservice:v1.x
+          docker push alamin899/amarpet:v1.x
+
+  dev-deploy:
+    name: Development Deploy
+    needs: dev-build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Development Server Access via SSH Access
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          command: |
+            cd /var/www/laravel-microservice
+            make pull
+            make stop
+            make start
+            make down
+            make composer-update
+            make migrate
+            make optimize
+            make up
