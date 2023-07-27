@@ -24,7 +24,7 @@ jobs:
         run: |
           docker build --platform linux/amd64 -f Dockerfile . -t larave-microservice:v1.x
           docker tag larave-microservice:v1.x alamin899/larave-microservice:v1.x
-          docker push alamin899/amarpet:v1.x
+          docker push alamin899/larave-microservice:v1.x
 
   dev-deploy:
     name: Development Deploy
