@@ -89,6 +89,8 @@ ENV APP_DEBUG=false
 
 RUN rm -rf /app/node_modules
 
+COPY --from=base /app /app
+
 RUN chmod +x /app/docker/dev/run.sh
 
 EXPOSE 80
