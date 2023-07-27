@@ -8,7 +8,7 @@ on:
 jobs:
   dev-build:
     name: Development Build
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Checkout Git Repository
         uses: actions/checkout@v2
